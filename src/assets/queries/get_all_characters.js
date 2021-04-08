@@ -1,6 +1,6 @@
 async function getAllCharacters() { // Obtiene characters, de la api que vamos a usar
     // voy a buscar el post a la api: (con fetch)
-    const characters = await fetch('https://tarea-1-breaking-bad.herokuapp.com/api/characters?limit=3&offset=10');
+    const characters = await fetch('https://tarea-1-breaking-bad.herokuapp.com/api/characters?limit=1&offset=10');
     // el FETCH ES PARA OBTENER INFO DE OTROS SITIOS Y RETORNA UNA PROMESA
     return characters.json(); // lo pasamos a json, para que quede listo.
   }

@@ -44,7 +44,10 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "core-js": "^3.6.5",
+    "fontsource-roboto": "^4.0.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
     "koa-ejs": "^4.3.0",
