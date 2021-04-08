@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Episodes = (props) => {
     const classes = useStyles();
-    const {season} = props // receive its season
+    const {seasonId} = props // receive its season
 
     const episodes = [
         "Pilot",
@@ -23,11 +23,21 @@ const Episodes = (props) => {
          "Gray Matter",
          "Crazy Handful of Nothin",
          "A No-Rough-Stuff-Type Deal"
-     ]
+     ] //falta cambiar, este, hacer la consulta a la api correspondiente
+      //cuando se haga click aqui.(o en el componente que contiene este,
+      // revisar que es mas eficiente dps)
+
+    const handleClick = (e, elem) => {
+      console.log(elem)
+      // dirigir al episodio con ese nombre con react router.
+      // 
+      
+
+    }
 
      const episodesComponents = episodes.map( (elem) => (
         <>
-            <ListItem button>
+            <ListItem button onClick={(e) => handleClick(e, elem)}>
                 <ListItemText primary={`${elem}`} />
             </ListItem>
             <Divider light />
