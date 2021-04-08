@@ -3,8 +3,6 @@ import React, {useState, useEffect} from 'react';
 // import service from '../../../queries/get_all_characters'
 import {SeriesOptions} from './SeriesOptions'
 
-import {Seasons} from '../Seasons/Seasons'
-
 
 import {CssBaseline, Typography, Container} from '@material-ui/core'
 

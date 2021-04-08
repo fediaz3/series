@@ -7,6 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Episodes } from '../Episodes/Episodes';
+import { useHistory } from "react-router-dom";
+import { HistoryOutlined } from '@material-ui/icons';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Seasons = (props) => {
   const classes = useStyles();
+  const history = useHistory();
+
+
   const {serie} = props // receive its serie that belongs to 
 
   const [currentSeason, setCurrentSeason] = useState(-1);
@@ -57,6 +62,10 @@ const Seasons = (props) => {
   const handleChange = (event, value) => {
     setCurrentSeason(value);
     console.log(value)
+    history.push(`/season/${value + 1}`) //because value is the index
+                                         // and index start in 0
+                                         // and seasons start
+
     // dirigir a una nueva vista para la temporada.(salir de HOME)
   };
 
@@ -84,7 +93,6 @@ const Seasons = (props) => {
         </Tabs>
       </AppBar>
 
-      
       {/*
         seasons.map((elem, index) => (
             <TabPanel value={value} index={index}>
