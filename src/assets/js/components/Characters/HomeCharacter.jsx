@@ -1,11 +1,9 @@
 import React from 'react'
-
-
 import {CssBaseline, Container} from '@material-ui/core'
-import { Episode } from './ShowEpisode'
+import { Character } from './ShowCharacter'
 
 
-const HomeEpisode = (props) => {
+const HomeCharacter = (props) => {
 
     return (
         <>
@@ -13,11 +11,11 @@ const HomeEpisode = (props) => {
             <CssBaseline />
               {/* <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} /> */}
               <Container maxWidth="sm">
-                <Episode/>
+                <Character/>
               </Container>
             </React.Fragment>
         </>
     )
 }
 
-export {HomeEpisode}
+export {HomeCharacter}

@@ -7,6 +7,7 @@ import {
 import { Home } from '../Home/Home'
 import {HomeSeason, Season} from '../Seasons/HomeSeason'
 import { HomeEpisode } from '../Episodes/HomeEpisode';
+import { HomeCharacter } from '../Characters/HomeCharacter';
 
 function Body() {
   return (
@@ -15,6 +16,9 @@ function Body() {
           
           <Route exact path="/:serieName/season/:seasonId" children={() => <HomeSeason/>} /> 
           <Route exact path="/:serieName/season/:seasonId/episode/:episodeId" children={() => <HomeEpisode/>} /> 
+
+          <Route exact path="/character/:characterId" children={() => <HomeCharacter/>} /> 
+          
           
           {/* con :id y :type forma para pasar dos parametros */}
   

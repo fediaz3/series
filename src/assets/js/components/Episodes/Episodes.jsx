@@ -19,7 +19,7 @@ const Episodes = (props) => {
     let { url } = useRouteMatch();
     const history = useHistory();
 
-    const {seasonId} = props // receive its season
+    const {seasonId} = props // receive its season for to do the querie
 
     const episodes = [
         "Pilot",
@@ -33,11 +33,11 @@ const Episodes = (props) => {
       //cuando se haga click aqui.(o en el componente que contiene este,
       // revisar que es mas eficiente dps)
 
-    const handleClick = (e, elem) => {
+    const handleClick = (e, elem, index) => {
       console.log(elem)
-      console.log("current url: ", url) 
+      // console.log("current url: ", url) 
       // /:serieName/season/:seasonId/episode/:episodeId
-      history.push(`${url}/episode/${1}`)
+      history.push(`${url}/episode/${index + 1}`) //modificar con el real 
       // history.push(`${seasonId}/episode/${1}`) Este tambien servia porque:
       // importante notar esto
       //push que empieza sin "/"
@@ -53,9 +53,9 @@ const Episodes = (props) => {
 
     }
 
-     const episodesComponents = episodes.map( (elem) => (
+     const episodesComponents = episodes.map( (elem, index) => (
         <>
-            <ListItem button onClick={(e) => handleClick(e, elem)}>
+            <ListItem button onClick={(e) => handleClick(e, elem, index)}>
                 <ListItemText primary={`${elem}`} />
             </ListItem>
             <Divider light />
