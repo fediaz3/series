@@ -44,7 +44,10 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "core-js": "^3.6.5",
+    "fontsource-roboto": "^4.0.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
     "koa-ejs": "^4.3.0",
@@ -55,12 +58,13 @@
     "koa-session": "^6.0.0",
     "koa-static": "^5.0.0",
     "nodemailer": "^6.4.11",
-    "pg": "^8.3.3",
+    "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.21",
+    "react-router-dom": "^5.2.0",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0"
   },
