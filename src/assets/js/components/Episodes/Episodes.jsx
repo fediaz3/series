@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch, useParams } from "react-router-dom";
 import { HistoryOutlined } from '@material-ui/icons';
+import service from '../../../queries/getEpisodesBySerie'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,8 +19,42 @@ const Episodes = (props) => {
 
     let { url } = useRouteMatch();
     const history = useHistory();
+    let { serieName, seasonNum } = useParams(); 
 
-    const {seasonId} = props // receive its season for to do the querie
+
+    const [episodesBrBad, setEpisodesBrBad] = useState([])
+    const [episodesBeCal, setEpisodesBeCal] = useState([])
+
+    useEffect(() => {
+      console.log("Serieee nameeeeee:", serieName)
+      if (serieName == "Breaking Bad"){
+        fetchEpisodesBreakingBad()
+      } else if (serieName == "Better Call Soul"){
+        fetchEpisodesBetterCallSaul()
+      }
+      // fetchSeasons()
+    }, [])
+
+
+    async function fetchEpisodesBreakingBad(){
+      const episodesBrBadList = await service.getEpisodesBreakingBad();
+      // console.log("Episodes breaking bad List:", episodesBrBadList)
+      const episodesBrBadList2 = episodesBrBadList.
+        filter( (x) => `${x.season}` == `${seasonNum}` ).
+        map( (x) => x.title)
+      console.log("Episodes breaking bad List:", episodesBrBadList2)
+      setEpisodesBrBad(episodesBrBadList2)
+    }
+
+    async function fetchEpisodesBetterCallSaul(){
+      const episodesBeCalList = await service.getEpisodesBetterCallSaul();
+      // console.log("Episodes better call saul List:", episodesBeCalList)
+      const episodesBeCalList2 = episodesBeCalList.
+        filter( (x) => `${x.season}` == `${seasonNum}` ).
+        map( (x) => x.title)
+      console.log("Episodes better call soul List:", episodesBeCalList2)
+      setEpisodesBeCal(episodesBeCalList2)
+    }
 
     const episodes = [
         "Pilot",
@@ -33,12 +68,14 @@ const Episodes = (props) => {
       //cuando se haga click aqui.(o en el componente que contiene este,
       // revisar que es mas eficiente dps)
 
+    
+
     const handleClick = (e, elem, index) => {
       console.log(elem)
       // console.log("current url: ", url) 
-      // /:serieName/season/:seasonId/episode/:episodeId
+      // /:serieName/season/:seasonNum/episode/:episodeNum
       history.push(`${url}/episode/${index + 1}`) //modificar con el real 
-      // history.push(`${seasonId}/episode/${1}`) Este tambien servia porque:
+      // history.push(`${seasonNum}/episode/${1}`) Este tambien servia porque:
       // importante notar esto
       //push que empieza sin "/"
       //agrega al existente, partiendo

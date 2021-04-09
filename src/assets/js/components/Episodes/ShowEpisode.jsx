@@ -14,12 +14,10 @@ import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
 import { Characters } from '../Characters/Characters';
 
 
-
-
 const Episode = (props) => {
     const classes = useStyles();
 
-    let { serieName, seasonId, episodeId } = useParams(); // get the variable parameters 
+    let { serieName, seasonNum, episodeNum } = useParams(); // get the variable parameters 
                                                           // that exist in the current url
 
     return (
@@ -29,7 +27,7 @@ const Episode = (props) => {
               <Grid container alignItems="center">
                 <Grid item xs>
                   <Typography gutterBottom variant="h4">
-                    {`Episodio ${episodeId}`}
+                    {`Episodio ${episodeNum}`}
                   </Typography>
                 </Grid>
                 <Grid item>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,6 +9,10 @@ import Box from '@material-ui/core/Box';
 import { Episodes } from '../Episodes/Episodes';
 import { useHistory } from "react-router-dom";
 import { HistoryOutlined } from '@material-ui/icons';
+
+
+import service from '../../../queries/getEpisodesBySerie'
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,43 +58,70 @@ const Seasons = (props) => {
   const classes = useStyles();
   const history = useHistory();
 
-
   const {serie} = props // receive its serie that belongs to 
-
   const [currentSeason, setCurrentSeason] = useState(-1);
 
-  const handleChange = (event, value) => {
+  const [seasonsBreakingBad, setSeasonsBreakingBad] = useState([])
+
+  const [seasonsBetterCallSaul, setSeasonsBetterCallSaul] = useState([])
+
+
+  useEffect(() => {
+    fetchSeasons() // solo se ejecuta al inicio, al cargar el componente
+  }, [])
+
+  async function fetchSeasons(){
+    const seasonsBrBadList = await service.getEpisodesBreakingBad();
+    // console.log("Seasons breaking bad List:", seasonsBBadList)
+    const seasonsBrBadList2 = seasonsBrBadList.map( (elem) => (elem.season) )
+    let uniqueSeasonsBrBadList = [ ... new Set(seasonsBrBadList2)]
+    // console.log("Seasos List in breaking bad:", uniqueSeasonsBrBadList)
+    setSeasonsBreakingBad(uniqueSeasonsBrBadList)
+
+    const seasonsBeCalList = await service.getEpisodesBetterCallSaul();
+    let seasonsBeCalList2 = seasonsBeCalList.map( (elem) => (elem.season) )
+    let uniqueSeasonsBeCalList = [ ... new Set(seasonsBeCalList2)]
+    // console.log("Seasons better call soul List:", uniqueSeasonsBeCalList)
+    setSeasonsBetterCallSaul(uniqueSeasonsBeCalList)
+
+  }
+
+  const handleClick = (event, value) => {
     setCurrentSeason(value);
     console.log(value)
-    let seasonId = value + 1
-    history.push(`${serie}/season/${seasonId}`) //because value is the index
+    let seasonNum = value + 1
+    history.push(`${serie}/season/${seasonNum}`) //because value is the index
                                          // and index start in 0
                                          // and seasons start
-
     // dirigir a una nueva vista para la temporada.(salir de HOME)
   };
 
-  const seasons = ['Temporada 1', "Temporada 2", "Temporada 3",
-                    'Temporada 4', 'Temporada 5', 'Temporada 6', 'Temporada 7']
-
-
-  const seasonsTabPanel = seasons.map((elem, index) => (
-      <Tab label={`${elem}`} {...a11yProps(index)} />
+  const seasonsBrBadTabPanel = seasonsBreakingBad.map((elem, index) => (
+      <Tab label={`Temporada ${elem}`} {...a11yProps(index)} />
   ));
+
+  const seasonsBeCalTabPanel = seasonsBetterCallSaul.map((elem, index) => (
+    <Tab label={`Temporada ${elem}`} {...a11yProps(index)} />
+));
 
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
           value={currentSeason}
-          onChange={handleChange}
+          onChange={handleClick}
           indicatorColor="primary"
           textColor="primary"
           variant="scrollable"
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
-        >   
-          {seasonsTabPanel}  
+        >
+          { 
+          serie == "Breaking Bad"
+          ? seasonsBrBadTabPanel  // when condition is True
+          : seasonsBeCalTabPanel 
+          }
+        
         </Tabs>
       </AppBar>
 
