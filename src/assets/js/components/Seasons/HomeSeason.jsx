@@ -9,7 +9,7 @@ import {CssBaseline, Container, Typography} from '@material-ui/core'
 import { Season } from './ShowSeason';
 
 const HomeSeason = (props) => {
-    let { id, type } = useParams(); //
+    let { serieName, seasonId } = useParams(); //
     // ene ste caso especial id: nombre de la serie
     //                       type: id de la season.
     return (
@@ -18,7 +18,7 @@ const HomeSeason = (props) => {
             <CssBaseline />
               {/* <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} /> */}
               <Container maxWidth="sm">
-                <Season seasonId={type}/>
+                <Season seasonId={seasonId}/>
               </Container>
             </React.Fragment>
         </>

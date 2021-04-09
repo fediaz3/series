@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
+import { useHistory, useRouteMatch } from "react-router-dom";
+import { HistoryOutlined } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -13,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Episodes = (props) => {
     const classes = useStyles();
+
+    let { url } = useRouteMatch();
+    const history = useHistory();
+
     const {seasonId} = props // receive its season
 
     const episodes = [
@@ -29,6 +35,18 @@ const Episodes = (props) => {
 
     const handleClick = (e, elem) => {
       console.log(elem)
+      console.log("current url: ", url) 
+      // /:serieName/season/:seasonId/episode/:episodeId
+      history.push(`${url}/episode/${1}`)
+      // history.push(`${seasonId}/episode/${1}`) Este tambien servia porque:
+      // importante notar esto
+      //push que empieza sin "/"
+      //agrega al existente, partiendo
+      // desde uno anterior.
+      // Y PUSH QUE EMPIEZA CON url modifica la ruta entera
+                                               
+      
+      // history.push(`${url}/${elem}`)
       // dirigir al episodio con ese nombre con react router.
       // 
       

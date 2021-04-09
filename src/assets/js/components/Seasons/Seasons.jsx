@@ -62,7 +62,8 @@ const Seasons = (props) => {
   const handleChange = (event, value) => {
     setCurrentSeason(value);
     console.log(value)
-    history.push(`${serie}/season/${value + 1}`) //because value is the index
+    let seasonId = value + 1
+    history.push(`${serie}/season/${seasonId}`) //because value is the index
                                          // and index start in 0
                                          // and seasons start
 
