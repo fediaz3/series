@@ -15,7 +15,7 @@ function Body() {
           <Route exact path="/" component={() => <Home/>} />
           
           <Route exact path="/:serieName/season/:seasonNum" children={() => <HomeSeason/>} /> 
-          <Route exact path="/:serieName/season/:seasonNum/episode/:episodeNum" children={() => <HomeEpisode/>} /> 
+          <Route exact path="/:serieName/season/:seasonNum/episode/:episodeNum/:episodeId" children={() => <HomeEpisode/>} /> 
 
           <Route exact path="/character/:characterId" children={() => <HomeCharacter/>} /> 
           

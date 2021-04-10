@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 import { useParams } from "react-router-dom";
@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
 import { Seasons } from '../Seasons/Seasons';
 import { Link } from 'react-router-dom';
+import service from '../../../queries/getCharacterById'
 
 
 
@@ -23,23 +24,55 @@ const Character = (props) => {
     let { characterId } = useParams(); // get the variable parameters 
                                                           // that exist in the current url
 
+    useEffect(() => {
+      fetchCharacter(characterId)
+    }, []) 
+    
+    const [image, setImage] = useState('')
+    const [name, setName] = useState('')
+    const [nickName, setNickName] = useState('')
+    const [occupation, setOcuppation] = useState('')
+    const [status, setStatus] = useState('')
+    const [category, setCategory] = useState([])
+    const [appearenceBrBad, setApperenceBrBad] = useState([])
+    const [appearenceBeCal, setAppearenceBeCal] = useState([])
+    const [portrayed, setPortrayed] = useState('')
+
+
     // con la API obtener, el nombre y todos sus detalles, porque aqui
     // ya tengo el ID unico del personaje
+    async function fetchCharacter(characterId){
+      const characterData = await service.getCharacterById(characterId);
+      const characterData2 = characterData[0]
+      console.log("Character :", characterData2)
+      setImage(characterData2.img)
+      setName(characterData2.name)
+      setNickName(characterData2.nickname)
+      setOcuppation(characterData2.occupation)
+      setStatus(characterData2.status)
+      setCategory(characterData2.category)
+      setApperenceBrBad(characterData2.appearance)
+      setAppearenceBeCal(characterData2.better_call_saul_appearance)
+      setPortrayed(characterData2.portrayed)
+      
 
-    const appearences_b_bad = [1, 2, 3, 4] //n° de la season(temporada) en la serie
-    const appearences_b_caul_soul = [2, 5, 6, 7] //numero de temporada en la serie
+    }
 
 
-    const appearencesBreakingBad = appearences_b_bad.map( (elem) => (
-        <Link to={`/BreakingBad/season/${elem}`} style={{"text-decoration": "none"}}>
-            {`Temporada ${elem}  `}
+    const appearencesBreakingBad = appearenceBrBad.map( (elem) => (
+      
+        <Link to={`/Breaking Bad/season/${elem}`} style={{"text-decoration": "none"}}>
+            {`Temporada ${elem}  `} 
         </Link> 
         
     ))
 
-    const appearencesBetterCaulSoul = appearences_b_caul_soul.map( (elem) => (
-        <Link to={`/BetterCaulSoul/season/${elem}`} style={{"text-decoration": "none"}}>
-            {`Temporada ${elem}  `}
+    // "/:serieName/season/:seasonNum" 
+
+    const appearencesBetterCaulSoul = appearenceBeCal.map( (elem) => (
+        //notar que el link to, tiene que ser con espacios el nombre de la serie
+        <Link to={`/Better Call Saul/season/${elem}`} style={{"text-decoration": "none"}}>
+            {`Temporada ${elem}  `} 
         </Link> 
     ))
 
@@ -51,38 +84,62 @@ const Character = (props) => {
               <Grid container alignItems="center">
                 <Grid item xs>
                   <Typography gutterBottom variant="h4">
-                    {`Nombre Personaje`}
+                    {`${name}`}
                   </Typography>
                 </Grid>
                 <Grid item xs>
-                  <img src="https://images.amcnetworks.com/amc.com/wp-content/uploads/2015/04/cast_bb_700x1000_mike-ehrmantraut-lg.jpg"
+                  <img src={`${image}`}
                    style={{ height: 'auto', width: "100%" }}></img>  
                 </Grid>
                 
               </Grid>
               <Typography color="textSecondary" variant="body2">
-                  NickName: El Guasón
+                  {`Nickname: ${nickName}`}
               </Typography>
               <Typography color="textSecondary" variant="body2">
-                  Ocupación: Comisario 
+                  {`Ocupación: ${occupation}`}
               </Typography>
               <Typography color="textSecondary" variant="body2">
-                  Estatus: Vivo
+                  {`Estatus: ${status}`}
               </Typography>
-              <Typography color="textSecondary" variant="body2">
-                  NickName: El Guasón
-              </Typography>
-              <Typography color="textSecondary" variant="body2">
-                Apariciones en temporadas de Breaking Bad
-              </Typography>
-              {appearencesBreakingBad}
-              <Typography color="textSecondary" variant="body2">
+
+              { appearenceBrBad.length > 0
+              ?
+              <> 
+                <Typography color="textSecondary" variant="body2">
+                  Apariciones en temporadas de Breaking Bad
+                </Typography>
+                {appearencesBreakingBad}
+              </>
+              : 
+              <>
+                <Typography color="textSecondary" variant="body2">
+                  No tiene apariciones en temporadas de Breaking Bad
+                </Typography>
+              </>
+              }
+              
+
+
+              { appearenceBeCal.length > 0 
+              ? 
+              <>
+                <Typography color="textSecondary" variant="body2">
                   Apariciones en temporadas de Better Caul Soul
-              </Typography>
-              {appearencesBetterCaulSoul}
+                </Typography>
+                { appearencesBetterCaulSoul }
+              </>
+              : 
+              <>
+                <Typography color="textSecondary" variant="body2">
+                  No tiene apariciones en temporadas de Better Caul Soul
+                </Typography>
+              </>
+              }
+              
               
               <Typography color="textSecondary" variant="body2">
-                  Actor/Actriz: Brad Pitt
+                  {`Actor/Actriz ${portrayed}`}
               </Typography>
             </div>
             <Divider variant="middle" />

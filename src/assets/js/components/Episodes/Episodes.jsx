@@ -29,7 +29,7 @@ const Episodes = (props) => {
       console.log("Serieee nameeeeee:", serieName)
       if (serieName == "Breaking Bad"){
         fetchEpisodesBreakingBad()
-      } else if (serieName == "Better Call Soul"){
+      } else if (serieName == "Better Call Saul"){
         fetchEpisodesBetterCallSaul()
       }
       // fetchSeasons()
@@ -41,8 +41,8 @@ const Episodes = (props) => {
       // console.log("Episodes breaking bad List:", episodesBrBadList)
       const episodesBrBadList2 = episodesBrBadList.
         filter( (x) => `${x.season}` == `${seasonNum}` ).
-        map( (x) => x.title)
-      console.log("Episodes breaking bad List:", episodesBrBadList2)
+        map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
+      //console.log("Episodes breaking bad List:", episodesBrBadList2)
       setEpisodesBrBad(episodesBrBadList2)
     }
 
@@ -51,56 +51,52 @@ const Episodes = (props) => {
       // console.log("Episodes better call saul List:", episodesBeCalList)
       const episodesBeCalList2 = episodesBeCalList.
         filter( (x) => `${x.season}` == `${seasonNum}` ).
-        map( (x) => x.title)
-      console.log("Episodes better call soul List:", episodesBeCalList2)
+        map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
+      //console.log("Episodes better call saul List:", episodesBeCalList2)
       setEpisodesBeCal(episodesBeCalList2)
     }
-
-    const episodes = [
-        "Pilot",
-         "Cat's in the Bag...",
-         "...And the Bag's in the River",
-         "Cancer Man",
-         "Gray Matter",
-         "Crazy Handful of Nothin",
-         "A No-Rough-Stuff-Type Deal"
-     ] //falta cambiar, este, hacer la consulta a la api correspondiente
-      //cuando se haga click aqui.(o en el componente que contiene este,
-      // revisar que es mas eficiente dps)
-
     
-
     const handleClick = (e, elem, index) => {
-      console.log(elem)
+      console.log(elem, elem.episodeId)
       // console.log("current url: ", url) 
-      // /:serieName/season/:seasonNum/episode/:episodeNum
-      history.push(`${url}/episode/${index + 1}`) //modificar con el real 
+      // /:serieName/season/:seasonNum/episode/:episodeNum/:episodeId
+      history.push(`${url}/episode/${index + 1}/${elem.episodeId}`) //modificar con el real 
       // history.push(`${seasonNum}/episode/${1}`) Este tambien servia porque:
       // importante notar esto
       //push que empieza sin "/"
       //agrega al existente, partiendo
       // desde uno anterior.
       // Y PUSH QUE EMPIEZA CON url modifica la ruta entera
-                                               
-      
       // history.push(`${url}/${elem}`)
       // dirigir al episodio con ese nombre con react router.
       // 
       
-
     }
 
-     const episodesComponents = episodes.map( (elem, index) => (
+     const episodesBrBadComponents = episodesBrBad.map( (elem, index) => (
         <>
             <ListItem button onClick={(e) => handleClick(e, elem, index)}>
-                <ListItemText primary={`${elem}`} />
+                <ListItemText primary={`${elem.title}`} />
             </ListItem>
             <Divider light />
         </> 
      ))
+
+     const episodesBeCalComponents = episodesBeCal.map( (elem, index) => (
+      <>
+          <ListItem button onClick={(e) => handleClick(e, elem, index)}>
+              <ListItemText primary={`${elem.title}`} />
+          </ListItem>
+          <Divider light />
+      </> 
+   ))
+
      return (
         <List component="nav" className={classes.root} aria-label="mailbox folders">
-          {episodesComponents}
+          { serieName == "Breaking Bad"
+           ? episodesBrBadComponents
+           : episodesBeCalComponents
+          }
         </List>
       );
 

@@ -53,8 +53,8 @@ const SeriesOptions = (props) => {
             </Button>
             
             <Button variant="contained" color="secondary" 
-            onClick={(e) =>  handleClick(e, 'Better Call Soul')}>
-              Better Call Soul
+            onClick={(e) =>  handleClick(e, 'Better Call Saul')}>
+              Better Call Saul
             </Button>
          
         </div>

@@ -19,7 +19,7 @@ const Season = () => {
     return (
         <>
           <Typography component="h1" variant="h5">
-            {`Temporada ${seasonNum}`}
+            {`Temporada ${seasonNum} | ${serieName}`}
           </Typography>
           <Episodes/>
         </>

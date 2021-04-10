@@ -90,6 +90,7 @@ const Seasons = (props) => {
     setCurrentSeason(value);
     console.log(value)
     let seasonNum = value + 1
+    
     history.push(`${serie}/season/${seasonNum}`) //because value is the index
                                          // and index start in 0
                                          // and seasons start
