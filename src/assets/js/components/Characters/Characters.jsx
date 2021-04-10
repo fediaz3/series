@@ -1,16 +1,18 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
 import { useHistory, useRouteMatch } from "react-router-dom";
+import service from '../../../queries/getCharacterByFullName'
 
 const Characters = (props) => {
     const classes = useStyles();
     let { url } = useRouteMatch();
     const history = useHistory();
     
-    const characters = ["Personaje 1", "Personaje 2", "Personaje 3", "Personaje 4",
-                        "Personaje 5", "Personaje 6", "Personaje 7"]
+    const {characters} = props
+
+    const [characterId, setCharacterId] = useState(-1)
 
     const handleClick = (e, value, index) => {
         console.log(value, index + 1)
@@ -19,7 +21,38 @@ const Characters = (props) => {
         // => 
         // buscar el id del character en la API
         // supongamos que es 10:
-        history.push(`/character/${10}`) //modificar con el real 
+        // console.log("nombre del personajeeee: ", value)
+        let nameArray = value.split(" ")
+        console.log(nameArray)
+        let firstName = nameArray[0]
+        let lastName = nameArray[1]
+        let secondLastName = undefined
+        if (nameArray.length == 2){ // minimo 2 nombres tienen en la APi los personajes.
+          fetchCharacter(firstName, lastName)
+        } else if (nameArray.length == 3){ // maximo 3 nombres en la API tienen los personajes        
+          secondLastName = nameArray[2]
+          fetchCharacterVersion2(firstName, lastName, secondLastName)
+        }
+        
+        //history push lo hice dentro del fetch, para que solo lo haga
+        // dps del await que espera el characterId
+        
+    }
+
+    async function fetchCharacter(firstName, lastName){
+      const characterData = await service.getCharacterByFullName(firstName, lastName)
+      const characterData2 = characterData[0]
+      // console.log("characterData2", characterData2)
+      setCharacterId(characterData2.char_id)
+      history.push(`/character/${characterData2.char_id}`) // cambiar de ruta
+    }
+
+    async function fetchCharacterVersion2(firstName, lastName, secondLastName){
+      const characterData = await service.getCharacterByFullNameVersion2(firstName, lastName, secondLastName)
+      const characterData2 = characterData[0]
+      // console.log("characterData2", characterData2)
+      setCharacterId(characterData2.char_id)
+      history.push(`/character/${characterData2.char_id}`) // cambiar de ruta
     }
 
     const charactersList = characters.map( (elem, index) => (
