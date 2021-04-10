@@ -8,11 +8,14 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import { SearchInput } from './SearchInput';
+import { SearchInputAuxiliar } from './SearchInputAuxiliar';
 
 
 
 const Navbar = () => {
   const classes = useStyles();
+  
 
   return (
     <div className={classes.root}>
@@ -32,7 +35,7 @@ const Navbar = () => {
           {/* <Typography className={classes.title} variant="h6" noWrap>
             Tarea 1 Fabián Díaz
           </Typography> */}
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -44,7 +47,9 @@ const Navbar = () => {
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
-          </div>
+            </div> */}
+
+            <SearchInputAuxiliar/>
         </Toolbar>
       </AppBar>
     </div>
