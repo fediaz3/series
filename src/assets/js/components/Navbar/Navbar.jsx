@@ -11,11 +11,16 @@ import SearchIcon from '@material-ui/icons/Search';
 import { SearchInput } from './SearchInput';
 import { SearchInputAuxiliar } from './SearchInputAuxiliar';
 
+import { useHistory } from "react-router-dom";
 
 
 const Navbar = () => {
   const classes = useStyles();
+  const history = useHistory();
   
+  const handleButtonClick = (e) => {
+    history.push("/")
+  }
 
   return (
     <div className={classes.root}>
@@ -26,6 +31,7 @@ const Navbar = () => {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={handleButtonClick}
           >
             <MenuIcon />
           </IconButton>
