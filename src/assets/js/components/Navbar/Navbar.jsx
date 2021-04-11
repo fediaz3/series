@@ -12,6 +12,7 @@ import { SearchInput } from './SearchInput';
 import { SearchInputAuxiliar } from './SearchInputAuxiliar';
 
 import { useHistory } from "react-router-dom";
+import HomeIcon from '@material-ui/icons/Home';
 
 
 const Navbar = () => {
@@ -33,7 +34,7 @@ const Navbar = () => {
             aria-label="open drawer"
             onClick={handleButtonClick}
           >
-            <MenuIcon />
+            <HomeIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             
