@@ -11,18 +11,16 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    '& > *': {
       margin: theme.spacing(6),
       align: 'center',
       textAlign: 'center',
-    },
   },
   root2: {
-    '& > *': {
       margin: theme.spacing(2),
+      marginTop: theme.spacing(5),
+      marginBottom: theme.spacing(1),
       align: 'center',
       textAlign: 'center',
-    },
   },
 }));
 
@@ -42,7 +40,7 @@ const SeriesOptions = (props) => {
     <>
         <div className={classes.root2}>
             <Typography component="h1" variant="h5">
-              {currentSerie}
+              {'Seleccione una Serie'}
             </Typography>
         </div>
         <div className={classes.root}>
@@ -58,6 +56,13 @@ const SeriesOptions = (props) => {
             </Button>
          
         </div>
+
+        <div className={classes.root2}>
+            <Typography component="h1" variant="h5">
+              {currentSerie}
+            </Typography>
+        </div>
+
 
         <Seasons serie={currentSerie}/>
     </>
