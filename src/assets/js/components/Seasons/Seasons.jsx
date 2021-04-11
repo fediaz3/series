@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Seasons = (props) => {
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const classes = useStyles();
   const history = useHistory();
 
@@ -40,18 +43,26 @@ const Seasons = (props) => {
   }, [])
 
   async function fetchSeasons(){
-    const seasonsBrBadList = await service.getEpisodesBreakingBad();
-    // console.log("Seasons breaking bad List:", seasonsBBadList)
-    const seasonsBrBadList2 = seasonsBrBadList.map( (elem) => (elem.season) )
-    let uniqueSeasonsBrBadList = [ ... new Set(seasonsBrBadList2)]
-    // console.log("Seasos List in breaking bad:", uniqueSeasonsBrBadList)
-    setSeasonsBreakingBad(uniqueSeasonsBrBadList)
-
-    const seasonsBeCalList = await service.getEpisodesBetterCallSaul();
-    let seasonsBeCalList2 = seasonsBeCalList.map( (elem) => (elem.season) )
-    let uniqueSeasonsBeCalList = [ ... new Set(seasonsBeCalList2)]
-    // console.log("Seasons better call soul List:", uniqueSeasonsBeCalList)
-    setSeasonsBetterCallSaul(uniqueSeasonsBeCalList)
+    try {
+      const seasonsBrBadList = await service.getEpisodesBreakingBad();
+      // console.log("Seasons breaking bad List:", seasonsBBadList)
+      const seasonsBrBadList2 = seasonsBrBadList.map( (elem) => (elem.season) )
+      let uniqueSeasonsBrBadList = [ ... new Set(seasonsBrBadList2)]
+      // console.log("Seasos List in breaking bad:", uniqueSeasonsBrBadList)
+      setSeasonsBreakingBad(uniqueSeasonsBrBadList)
+  
+      const seasonsBeCalList = await service.getEpisodesBetterCallSaul();
+      let seasonsBeCalList2 = seasonsBeCalList.map( (elem) => (elem.season) )
+      let uniqueSeasonsBeCalList = [ ... new Set(seasonsBeCalList2)]
+      // console.log("Seasons better call soul List:", uniqueSeasonsBeCalList)
+      setSeasonsBetterCallSaul(uniqueSeasonsBeCalList)
+      setIsLoaded(true)
+    } catch(error){
+      console.log("Error: ", error)
+      setError(error);
+      setIsLoaded(true);
+    }
+    
 
   }
 
@@ -70,39 +81,45 @@ const Seasons = (props) => {
   const seasonsBeCalTabPanel = seasonsBetterCallSaul.map((elem) => (
     <Tab label={`Temporada ${elem}`} value={elem}/>
 ));
-
-  return (
-    <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Tabs
-          //value={currentSeason}
-          onChange={handleClick}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="scrollable auto tabs example"
-        >
-          { 
-          serie == "Breaking Bad"
-          ? seasonsBrBadTabPanel  // when condition is True
-          : seasonsBeCalTabPanel 
-          }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  } else if (!isLoaded) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <div className={classes.root}>
+        <AppBar position="static" color="default">
+          <Tabs
+            //value={currentSeason}
+            onChange={handleClick}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="scrollable auto tabs example"
+          >
+            { 
+            serie == "Breaking Bad"
+            ? seasonsBrBadTabPanel  // when condition is True
+            : seasonsBeCalTabPanel 
+            }
+          
+          </Tabs>
+        </AppBar>
+  
+        {/*
+          seasons.map((elem, index) => (
+              <TabPanel value={value} index={index}>
+                  {elem}
+                  <Episodes/>
+              </TabPanel>
+          ))
+          */}
         
-        </Tabs>
-      </AppBar>
-
-      {/*
-        seasons.map((elem, index) => (
-            <TabPanel value={value} index={index}>
-                {elem}
-                <Episodes/>
-            </TabPanel>
-        ))
-        */}
-      
-    </div>
-  );
+      </div>
+    );
+  }
+  
 }
 
 
