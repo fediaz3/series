@@ -12,7 +12,7 @@ const Characters = (props) => {
     
     const {characters} = props
 
-    const [characterId, setCharacterId] = useState(-1)
+    // const [characterId, setCharacterId] = useState(-1)
 
     const handleClick = (e, value, index) => {
         console.log(value, index + 1)
@@ -22,38 +22,37 @@ const Characters = (props) => {
         // buscar el id del character en la API
         // supongamos que es 10:
         // console.log("nombre del personajeeee: ", value)
+
+        // console.log(nameArray)
         let nameArray = value.split(" ")
-        console.log(nameArray)
-        let firstName = nameArray[0]
-        let lastName = nameArray[1]
-        let secondLastName = undefined
-        if (nameArray.length == 2){ // minimo 2 nombres tienen en la APi los personajes.
-          fetchCharacter(firstName, lastName)
-        } else if (nameArray.length == 3){ // maximo 3 nombres en la API tienen los personajes        
-          secondLastName = nameArray[2]
-          fetchCharacterVersion2(firstName, lastName, secondLastName)
+        // console.log(nameArray)
+        let n1 = nameArray[0]
+        let n2 = nameArray[1]
+        let n3 = undefined
+        // console.log("lelgamos aca xD 1:", nameArray)
+        if (nameArray.length == 3){
+          n3 = nameArray[2]
+          // console.log("lelgamos aca xD2:", nameArray)
         }
-        
+        let n4 = undefined
+        if (nameArray.length == 4){
+          n3 = nameArray[2]
+          n4 = nameArray[3]
+        } 
+        fetchCharacter(n1, n2, n3, n4)
         //history push lo hice dentro del fetch, para que solo lo haga
         // dps del await que espera el characterId
-        
     }
 
-    async function fetchCharacter(firstName, lastName){
-      const characterData = await service.getCharacterByFullName(firstName, lastName)
+    async function fetchCharacter(n1, n2, n3, n4){
+      const characterData = await service.getCharacterByFullNameNew(n1, n2, n3, n4)
       const characterData2 = characterData[0]
-      // console.log("characterData2", characterData2)
-      setCharacterId(characterData2.char_id)
+      // console.log("Character data",characterData[0])
+      // setCharacterId(characterData2.char_id)
       history.push(`/character/${characterData2.char_id}`) // cambiar de ruta
     }
 
-    async function fetchCharacterVersion2(firstName, lastName, secondLastName){
-      const characterData = await service.getCharacterByFullNameVersion2(firstName, lastName, secondLastName)
-      const characterData2 = characterData[0]
-      // console.log("characterData2", characterData2)
-      setCharacterId(characterData2.char_id)
-      history.push(`/character/${characterData2.char_id}`) // cambiar de ruta
-    }
+  
 
     const charactersList = characters.map( (elem, index) => (
         <>
