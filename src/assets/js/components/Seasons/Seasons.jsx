@@ -14,37 +14,6 @@ import { HistoryOutlined } from '@material-ui/icons';
 import service from '../../../queries/getEpisodesBySerie'
 
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    'aria-controls': `scrollable-auto-tabpanel-${index}`,
-  };
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,28 +57,25 @@ const Seasons = (props) => {
 
   const handleClick = (event, value) => {
     setCurrentSeason(value);
-    console.log(value)
-    let seasonNum = value + 1
-    
+    let seasonNum = value
     history.push(`${serie}/season/${seasonNum}`) //because value is the index
                                          // and index start in 0
                                          // and seasons start
     // dirigir a una nueva vista para la temporada.(salir de HOME)
   };
 
-  const seasonsBrBadTabPanel = seasonsBreakingBad.map((elem, index) => (
-      <Tab label={`Temporada ${elem}`} {...a11yProps(index)} />
+  const seasonsBrBadTabPanel = seasonsBreakingBad.map((elem) => (
+      <Tab label={`Temporada ${elem}`} value={elem} />
   ));
-
-  const seasonsBeCalTabPanel = seasonsBetterCallSaul.map((elem, index) => (
-    <Tab label={`Temporada ${elem}`} {...a11yProps(index)} />
+  const seasonsBeCalTabPanel = seasonsBetterCallSaul.map((elem) => (
+    <Tab label={`Temporada ${elem}`} value={elem}/>
 ));
 
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
-          value={currentSeason}
+          //value={currentSeason}
           onChange={handleClick}
           indicatorColor="primary"
           textColor="primary"
@@ -138,5 +104,38 @@ const Seasons = (props) => {
     </div>
   );
 }
+
+
+// function TabPanel(props) {
+//   const { children, value, index, ...other } = props;
+//   return (
+//     <div
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`scrollable-auto-tabpanel-${index}`}
+//       aria-labelledby={`scrollable-auto-tab-${index}`}
+//       {...other}
+//     >
+//       {value === index && (
+//         <Box p={3}>
+//           <Typography>{children}</Typography>
+//         </Box>
+//       )}
+//     </div>
+//   );
+// }
+
+// TabPanel.propTypes = {
+//   children: PropTypes.node,
+//   index: PropTypes.any.isRequired,
+//   value: PropTypes.any.isRequired,
+// };
+
+// function a11yProps(index) {
+//   return {
+//     id: `scrollable-auto-tab-${index}`,
+//     'aria-controls': `scrollable-auto-tabpanel-${index}`,
+//   };
+// }
 
 export {Seasons}
