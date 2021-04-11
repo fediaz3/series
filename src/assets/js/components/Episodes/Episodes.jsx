@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const Episodes = (props) => {
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const classes = useStyles();
 
     let { url } = useRouteMatch();
@@ -37,13 +40,22 @@ const Episodes = (props) => {
 
 
     async function fetchEpisodesBreakingBad(){
-      const episodesBrBadList = await service.getEpisodesBreakingBad();
-      // console.log("Episodes breaking bad List:", episodesBrBadList)
-      const episodesBrBadList2 = episodesBrBadList.
-        filter( (x) => `${x.season}` == `${seasonNum}` ).
-        map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
-      //console.log("Episodes breaking bad List:", episodesBrBadList2)
-      setEpisodesBrBad(episodesBrBadList2)
+      try {
+        const episodesBrBadList = await service.getEpisodesBreakingBad();
+        // console.log("Episodes breaking bad List:", episodesBrBadList)
+        const episodesBrBadList2 = episodesBrBadList.
+          filter( (x) => `${x.season}` == `${seasonNum}` ).
+          map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
+        //console.log("Episodes breaking bad List:", episodesBrBadList2)
+        setEpisodesBrBad(episodesBrBadList2)
+        setIsLoaded(true);
+      } catch(error) {
+        console.log("Error:", error)
+        setError(error);
+        setIsLoaded(true);
+
+      }
+      
     }
 
     async function fetchEpisodesBetterCallSaul(){
@@ -90,15 +102,20 @@ const Episodes = (props) => {
           <Divider light />
       </> 
    ))
-
-     return (
-        <List component="nav" className={classes.root} aria-label="mailbox folders">
-          { serieName == "Breaking Bad"
-           ? episodesBrBadComponents
-           : episodesBeCalComponents
-          }
-        </List>
-      );
+      if (error) {
+       return <div>Error: {error.message}</div>;
+     } else if (!isLoaded) {
+       return <div>Loading...</div>;
+     } else {
+         return (
+            <List component="nav" className={classes.root} aria-label="mailbox folders">
+              { serieName == "Breaking Bad"
+               ? episodesBrBadComponents
+               : episodesBeCalComponents
+              }
+            </List>
+          );
+     }
 
 }
 
