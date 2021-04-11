@@ -73,39 +73,37 @@ function SearchInput(props) {
     dispatch({ type: "UPDATE_SELECTION", selection: data.result.name })
     
             
-    console.log("Llevarlo a la vista del personaje elejido", data.result)
-
+    // console.log("Llevarlo a la vista del personaje elejido", data.result)
     let value = data.result.name
+    // console.log("VAlue:", value)
     let nameArray = value.split(" ")
-    // console.log(nameArray)
-    let firstName = nameArray[0]
-    let lastName = nameArray[1]
-    let secondLastName = undefined
-    if (nameArray.length == 2){ // minimo 2 nombres tienen en la APi los personajes.
-      fetchCharacter(firstName, lastName)
-    } else if (nameArray.length == 3){ // maximo 3 nombres en la API tienen los personajes        
-      secondLastName = nameArray[2]
-      fetchCharacterVersion2(firstName, lastName, secondLastName)
+    // console.log("nameArray:", nameArray)
+    let n1 = nameArray[0]
+    let n2 = nameArray[1]
+    let n3 = undefined
+    // console.log("lelgamos aca xD 1:", nameArray)
+    if (nameArray.length == 3){
+      n3 = nameArray[2]
+      // console.log("lelgamos aca xD2:", nameArray)
     }
+    let n4 = undefined
+    if (nameArray.length == 4){
+      n3 = nameArray[2]
+      n4 = nameArray[3]
+    } 
+    fetchCharacter(n1, n2, n3, n4)
   }
 
-  async function fetchCharacter(firstName, lastName){
-    const characterData = await service.getCharacterByFullName(firstName, lastName)
+  async function fetchCharacter(n1, n2, n3, n4){    
+    const characterData = await service.getCharacterByFullNameNew(n1, n2, n3, n4)
     const characterData2 = characterData[0]
-    console.log("veamos1:", characterData2.char_id)
+    // console.log("veamos1:", characterData2.char_id)
     history.push('/'); // esto primero, pq es un truco cuando no redirecciona bien el de
     // abajo
     history.replace(`/character/${characterData2.char_id}`);
 
   }
 
-  async function fetchCharacterVersion2(firstName, lastName, secondLastName){
-    const characterData = await service.getCharacterByFullNameVersion2(firstName, lastName, secondLastName)
-    const characterData2 = characterData[0]
-    console.log("veamos2:", characterData2.char_id)
-    history.push('/');
-    history.replace(`/character/${characterData2.char_id}`);
-  }
 
   return (
     <Grid>
