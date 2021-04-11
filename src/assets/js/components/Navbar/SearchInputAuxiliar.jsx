@@ -31,20 +31,23 @@ function SearchInputAuxiliar() {
             let promises = [await fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?limit=10&offset=0`)]
 
             let new_promise = undefined
-            for (let i = 10; i < 200; i *= 2){
+            for (let i = 10; i < 200; i += 10){ //cambiar esto que llega solo hasta 210( es suficiente para esta api)
                 new_promise = await fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?limit=10&offset=${i}`)
-                // if (new_promise.length == 0){
-                //     break // no sirve este break, buscar otra forma
-                // }
-                promises.push(new_promise)
+                
+                let newPromiseJson = new_promise.json()
+                promises.push(newPromiseJson)
+                console.log("Se resolvio la promesa")
+                console.log(newPromiseJson)
+                console.log(newPromiseJson.length)
+                if (newPromiseJson.length == 0){break}
             }
 
             // for (let i = 0; i < 10; i++) {
             //    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000));
             //    console.log(i);
             // 
-            console.log("llegamos a als promises:", promises)
-            promises = promises.map( x => x.json()) //pq vienen de ese formato 
+            // console.log("llegamos a als promises:", promises)
+            // promises = promises.map( x => x.json()) //pq vienen de ese formato 
         
             Promise.all(promises)
             .then(response => {
