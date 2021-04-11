@@ -2,25 +2,20 @@ import React, {useState, useEffect} from 'react'
 import { SearchInput } from './SearchInput';
 
 
-
-
 const convertToFormat = (data) => {
-    // recibo del formato: [ [ {}, {}, {}, ... ],   [ {}, {}, {}, ... ], [ {}, {}, {}, ... ] ]
-
-    // y quiero convertir al formato: [ {}, {}, {}, ... ,    {}, {}, {}, ... ,  {}, {}, {}, ...  ]
+    // recibo del formato: 
+    // [ [ {}, {}, {}, ... ],   [ {}, {}, {}, ... ], [ {}, {}, {}, ... ] ]
+    // y quiero convertir al formato: 
+    // [ {}, {}, {}, ... ,    {}, {}, {}, ... ,  {}, {}, {}, ...  ]
     let newData = []
     for (let i = 0; i < data.length; i++){
         for (let j = 0; j < data.length; j++){
             if (data[i][j] != undefined){
                newData.push(data[i][j]) 
-            } 
-            
+            }      
         }
-
     }
     return newData
-
-
 }
 
 function SearchInputAuxiliar() {
