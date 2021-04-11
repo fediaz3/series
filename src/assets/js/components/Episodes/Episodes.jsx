@@ -59,13 +59,22 @@ const Episodes = (props) => {
     }
 
     async function fetchEpisodesBetterCallSaul(){
-      const episodesBeCalList = await service.getEpisodesBetterCallSaul();
-      // console.log("Episodes better call saul List:", episodesBeCalList)
-      const episodesBeCalList2 = episodesBeCalList.
-        filter( (x) => `${x.season}` == `${seasonNum}` ).
-        map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
-      //console.log("Episodes better call saul List:", episodesBeCalList2)
-      setEpisodesBeCal(episodesBeCalList2)
+      try {
+        const episodesBeCalList = await service.getEpisodesBetterCallSaul();
+        // console.log("Episodes better call saul List:", episodesBeCalList)
+        const episodesBeCalList2 = episodesBeCalList.
+          filter( (x) => `${x.season}` == `${seasonNum}` ).
+          map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
+        //console.log("Episodes better call saul List:", episodesBeCalList2)
+        setEpisodesBeCal(episodesBeCalList2)
+        setIsLoaded(true);
+      } catch(error) {
+        console.log("Error:", error)
+        setError(error);
+        setIsLoaded(true);
+
+      }
+      
     }
     
     const handleClick = (e, elem, index) => {

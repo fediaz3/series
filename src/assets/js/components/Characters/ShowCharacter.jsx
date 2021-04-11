@@ -20,6 +20,9 @@ import service2 from '../../../queries/getQuotesByFullName'
 
 
 const Character = (props) => {
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    
     const classes = useStyles();
 
     let { characterId } = useParams(); // get the variable parameters 
@@ -47,47 +50,52 @@ const Character = (props) => {
     // con la API obtener, el nombre y todos sus detalles, porque aqui
     // ya tengo el ID unico del personaje
     async function fetchCharacter(characterId){
-      const characterData = await service.getCharacterById(characterId);
-      const characterData2 = characterData[0]
-      console.log("Character :", characterData2)
-
-
-
-      
-      //Obtener las citas, dado el nombre
-      let value = characterData2.name
-      let nameArray = value.split(" ")
-      // console.log(nameArray)
-      let n1 = nameArray[0]
-      let n2 = nameArray[1]
-      let n3 = undefined
-      console.log("lelgamos aca xD 1:", nameArray)
-      if (nameArray.length == 3){
-        n3 = nameArray[2]
-        console.log("lelgamos aca xD2:", nameArray)
-      }
-      let n4 = undefined
-      if (nameArray.length == 4){
-        n3 = nameArray[2]
-        n4 = nameArray[3]
-      } 
-     
-      const quotesCharacter = await service2.getQuotesByFullName(n1, n2, n3, n4)
-      console.log("QUOTESSSSS CHARACTER", quotesCharacter)
-
-
-
-      setImage(characterData2.img)
-      setName(characterData2.name)
-      setNickName(characterData2.nickname)
-      setOcuppation(characterData2.occupation)
-      setStatus(characterData2.status)
-      setCategory(characterData2.category)
-      setApperenceBrBad(characterData2.appearance)
-      setAppearenceBeCal(characterData2.better_call_saul_appearance)
-      setPortrayed(characterData2.portrayed)
-
-      setQuotes(quotesCharacter)
+      try { //notar que dentro de este try hay dos await 
+        const characterData = await service.getCharacterById(characterId);
+        const characterData2 = characterData[0]
+        console.log("Character :", characterData2)
+  
+        //Obtener las citas, dado el nombre
+        let value = characterData2.name
+        let nameArray = value.split(" ")
+        // console.log(nameArray)
+        let n1 = nameArray[0]
+        let n2 = nameArray[1]
+        let n3 = undefined
+        console.log("lelgamos aca xD 1:", nameArray)
+        if (nameArray.length == 3){
+          n3 = nameArray[2]
+          console.log("lelgamos aca xD2:", nameArray)
+        }
+        let n4 = undefined
+        if (nameArray.length == 4){
+          n3 = nameArray[2]
+          n4 = nameArray[3]
+        } 
+       
+        const quotesCharacter = await service2.getQuotesByFullName(n1, n2, n3, n4)
+        console.log("QUOTESSSSS CHARACTER", quotesCharacter)
+  
+  
+  
+        setImage(characterData2.img)
+        setName(characterData2.name)
+        setNickName(characterData2.nickname)
+        setOcuppation(characterData2.occupation)
+        setStatus(characterData2.status)
+        setCategory(characterData2.category)
+        setApperenceBrBad(characterData2.appearance)
+        setAppearenceBeCal(characterData2.better_call_saul_appearance)
+        setPortrayed(characterData2.portrayed)
+  
+        setQuotes(quotesCharacter)
+        setIsLoaded(true);
+  
+        } catch (error){
+          console.log("Error alguno de los fetch (son 2 posibles aqui):", error)
+          setError(error);
+          setIsLoaded(true);
+        }
 
 
       
@@ -121,8 +129,12 @@ const Character = (props) => {
      
     ))
 
-
-    return (
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
         <>
           <div className={classes.root}>
             <div className={classes.section1}>
@@ -211,6 +223,8 @@ const Character = (props) => {
             
         </>
       );
+    }
+    
 }
 
 const useStyles = makeStyles((theme) => ({
