@@ -95,12 +95,17 @@ function SearchInput(props) {
   }
 
   async function fetchCharacter(n1, n2, n3, n4){    
-    const characterData = await service.getCharacterByFullNameNew(n1, n2, n3, n4)
-    const characterData2 = characterData[0]
-    // console.log("veamos1:", characterData2.char_id)
-    history.push('/'); // esto primero, pq es un truco cuando no redirecciona bien el de
-    // abajo
-    history.replace(`/character/${characterData2.char_id}`);
+    try {
+      const characterData = await service.getCharacterByFullNameNew(n1, n2, n3, n4)
+      const characterData2 = characterData[0]
+      // console.log("veamos1:", characterData2.char_id)
+      history.push('/'); // esto primero, pq es un truco cuando no redirecciona bien el de
+      // abajo
+      history.replace(`/character/${characterData2.char_id}`);
+    } catch(error){
+      console.log("error en el fetch:", error)
+    }
+    
 
   }
 

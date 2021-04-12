@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react'
+import { ErrorMessage } from '../Error/Error';
+import { Loading } from '../Loading/Loading';
 import { SearchInput } from './SearchInput';
 
 
@@ -28,13 +30,15 @@ function SearchInputAuxiliar() {
     // similar to componentDidMount()
     useEffect( () => {
         const fetchData = async () => {
-            let promises = [await fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?limit=10&offset=0`)]
+            let promises = []
+            let new_promise = await fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?limit=10&offset=0`)
+            let newPromiseJson = new_promise.json()
+            promises.push(newPromiseJson)
 
-            let new_promise = undefined
             for (let i = 10; i < 200; i += 10){ //cambiar esto que llega solo hasta 210( es suficiente para esta api)
                 new_promise = await fetch(`https://tarea-1-breaking-bad.herokuapp.com/api/characters?limit=10&offset=${i}`)
                 
-                let newPromiseJson = new_promise.json()
+                newPromiseJson = new_promise.json()
                 promises.push(newPromiseJson)
                 console.log("Se resolvio la promesa")
                 console.log(newPromiseJson)
@@ -79,9 +83,17 @@ function SearchInputAuxiliar() {
     }, [])
   
     if (error) {
-      return <div>Error: {error.message}</div>;
+      return (
+        <>
+          <ErrorMessage/>
+        </>
+      )
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      return (
+        <>
+          <Loading color={"red"}/>
+       </>
+      );
     } else {
       return (
         <>

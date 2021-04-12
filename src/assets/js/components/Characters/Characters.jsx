@@ -45,11 +45,18 @@ const Characters = (props) => {
     }
 
     async function fetchCharacter(n1, n2, n3, n4){
-      const characterData = await service.getCharacterByFullNameNew(n1, n2, n3, n4)
-      const characterData2 = characterData[0]
-      // console.log("Character data",characterData[0])
-      // setCharacterId(characterData2.char_id)
-      history.push(`/character/${characterData2.char_id}`) // cambiar de ruta
+      try {
+        const characterData = await service.getCharacterByFullNameNew(n1, n2, n3, n4)
+        const characterData2 = characterData[0]
+        // console.log("Character data",characterData[0])
+        // setCharacterId(characterData2.char_id)
+        history.push(`/character/${characterData2.char_id}`) // cambiar de ruta
+      } catch(error) {
+        console.log("Error No se pudo encontrar info de este personaje", error)
+        //quizas mostrar una ventana emergente, pero por lo que piden
+        // con que no se caiga es suficiente.
+      }
+      
     }
 
   

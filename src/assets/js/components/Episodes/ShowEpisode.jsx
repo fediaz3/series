@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
 import { Characters } from '../Characters/Characters';
 import service from '../../../queries/getEpisodeById'
+import { Loading } from '../Loading/Loading';
+import { ErrorMessage } from '../Error/Error';
 
 
 
@@ -23,6 +25,9 @@ function convertDateFormat(date){
 }
 
 const Episode = (props) => {
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const classes = useStyles();
 
     let { serieName, seasonNum, episodeNum, episodeId } = useParams(); // get the variable parameters 
@@ -40,45 +45,70 @@ const Episode = (props) => {
     }, [])
     // obtener la información de episodeId en la api
     async function fetchEpisode(episodeId){
-      const episodeData = await service.getEpisodeById(episodeId);
-      const episodeData2 = episodeData[0]
-      console.log("Episode Data2: ", episodeData2)
-      setTitle(episodeData2.title)
-      setAirDate(episodeData2.air_date)
-      setCharacters(episodeData2.characters)
-      //console.log(episodeData2.air_date)
+      try {
+        const episodeData = await service.getEpisodeById(episodeId);
+        const episodeData2 = episodeData[0]
+        console.log("Episode Data2: ", episodeData2)
+        setTitle(episodeData2.title)
+        setAirDate(episodeData2.air_date)
+        setCharacters(episodeData2.characters)
+        //console.log(episodeData2.air_date)
+        setIsLoaded(true);
+        
+      } catch(error) {
+        console.log("Error en fetch:", error)
+        setError(error);
+        setIsLoaded(true);
+      }
+      
     }
 
-    return (
+
+    if (error) {
+      return (
         <>
-          <div className={classes.root}>
-            <div className={classes.section1}>
-              <Grid container alignItems="center">
-                <Grid item xs>
-                  <Typography gutterBottom variant="h4">
-                    {`${title}`}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography gutterBottom variant="h6">
-                    {`Episodio ${episodeNum} | Temporada ${seasonNum}`} 
-                  </Typography>
-                </Grid>
-                
-              </Grid>
-              <Typography color="textSecondary" variant="body2">
-                  {`Fecha de lanzamiento: ${convertDateFormat(airDate)}`}
-              </Typography>
-              <Typography color="textSecondary" variant="body2">
-                  {serieName}
-              </Typography>
-            </div>
-            <Divider variant="middle" />
-          </div>
-            
-          <Characters characters={characters}/>
+          <ErrorMessage/>
         </>
+      )
+    } else if (!isLoaded) {
+      return (
+        <>
+          <Loading/>
+       </>
       );
+    } else {
+        return (
+            <>
+              <div className={classes.root}>
+                <div className={classes.section1}>
+                  <Grid container alignItems="center">
+                    <Grid item xs>
+                      <Typography gutterBottom variant="h4">
+                        {`${title}`}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography gutterBottom variant="h6">
+                        {`Episodio ${episodeNum} | Temporada ${seasonNum}`} 
+                      </Typography>
+                    </Grid>
+                    
+                  </Grid>
+                  <Typography color="textSecondary" variant="body2">
+                      {`Fecha de lanzamiento: ${convertDateFormat(airDate)}`}
+                  </Typography>
+                  <Typography color="textSecondary" variant="body2">
+                      {serieName}
+                  </Typography>
+                </div>
+                <Divider variant="middle" />
+              </div>
+    
+              <Characters characters={characters}/>
+               
+            </>
+          );
+    }
 }
 
 const useStyles = makeStyles((theme) => ({

@@ -4,6 +4,8 @@ import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
 import { useHistory, useRouteMatch, useParams } from "react-router-dom";
 import { HistoryOutlined } from '@material-ui/icons';
 import service from '../../../queries/getEpisodesBySerie'
+import { Loading } from '../Loading/Loading';
+import { ErrorMessage } from '../Error/Error';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -15,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const Episodes = (props) => {
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const classes = useStyles();
 
     let { url } = useRouteMatch();
@@ -37,23 +42,41 @@ const Episodes = (props) => {
 
 
     async function fetchEpisodesBreakingBad(){
-      const episodesBrBadList = await service.getEpisodesBreakingBad();
-      // console.log("Episodes breaking bad List:", episodesBrBadList)
-      const episodesBrBadList2 = episodesBrBadList.
-        filter( (x) => `${x.season}` == `${seasonNum}` ).
-        map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
-      //console.log("Episodes breaking bad List:", episodesBrBadList2)
-      setEpisodesBrBad(episodesBrBadList2)
+      try {
+        const episodesBrBadList = await service.getEpisodesBreakingBad();
+        // console.log("Episodes breaking bad List:", episodesBrBadList)
+        const episodesBrBadList2 = episodesBrBadList.
+          filter( (x) => `${x.season}` == `${seasonNum}` ).
+          map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
+        //console.log("Episodes breaking bad List:", episodesBrBadList2)
+        setEpisodesBrBad(episodesBrBadList2)
+        setIsLoaded(true);
+      } catch(error) {
+        console.log("Error:", error)
+        setError(error);
+        setIsLoaded(true);
+
+      }
+      
     }
 
     async function fetchEpisodesBetterCallSaul(){
-      const episodesBeCalList = await service.getEpisodesBetterCallSaul();
-      // console.log("Episodes better call saul List:", episodesBeCalList)
-      const episodesBeCalList2 = episodesBeCalList.
-        filter( (x) => `${x.season}` == `${seasonNum}` ).
-        map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
-      //console.log("Episodes better call saul List:", episodesBeCalList2)
-      setEpisodesBeCal(episodesBeCalList2)
+      try {
+        const episodesBeCalList = await service.getEpisodesBetterCallSaul();
+        // console.log("Episodes better call saul List:", episodesBeCalList)
+        const episodesBeCalList2 = episodesBeCalList.
+          filter( (x) => `${x.season}` == `${seasonNum}` ).
+          map( (x) => {return {episodeId: x.episode_id, title: x.title} } )
+        //console.log("Episodes better call saul List:", episodesBeCalList2)
+        setEpisodesBeCal(episodesBeCalList2)
+        setIsLoaded(true);
+      } catch(error) {
+        console.log("Error:", error)
+        setError(error);
+        setIsLoaded(true);
+
+      }
+      
     }
     
     const handleClick = (e, elem, index) => {
@@ -90,15 +113,27 @@ const Episodes = (props) => {
           <Divider light />
       </> 
    ))
-
-     return (
-        <List component="nav" className={classes.root} aria-label="mailbox folders">
-          { serieName == "Breaking Bad"
-           ? episodesBrBadComponents
-           : episodesBeCalComponents
-          }
-        </List>
-      );
+      if (error) {
+       return (
+        <>
+          <ErrorMessage/>
+        </>
+       )
+     } else if (!isLoaded) {
+       return (
+       <>
+          <Loading/>
+       </>);
+     } else {
+         return (
+            <List component="nav" className={classes.root} aria-label="mailbox folders">
+              { serieName == "Breaking Bad"
+               ? episodesBrBadComponents
+               : episodesBeCalComponents
+              }
+            </List>
+          );
+     }
 
 }
 
