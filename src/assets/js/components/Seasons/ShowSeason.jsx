@@ -18,8 +18,13 @@ const Season = () => {
 
     return (
         <>
+          <p></p>
           <Typography component="h1" variant="h5">
             {`Temporada ${seasonNum} | ${serieName}`}
+          </Typography>
+          <p></p>
+          <Typography component="h5" variant="h5">
+            {"Episodios"}
           </Typography>
           <Episodes/>
         </>
