@@ -12,6 +12,8 @@ import { HistoryOutlined } from '@material-ui/icons';
 
 
 import service from '../../../queries/getEpisodesBySerie'
+import { Loading } from '../Loading/Loading';
+import { ErrorMessage } from '../Error/Error';
 
 
 
@@ -82,9 +84,17 @@ const Seasons = (props) => {
     <Tab label={`Temporada ${elem}`} value={elem}/>
 ));
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <>
+          <ErrorMessage/>
+      </>
+    )
   } else if (!isLoaded) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <Loading/>
+      </>
+    );
   } else {
     return (
       <div className={classes.root}>

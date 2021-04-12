@@ -4,6 +4,8 @@ import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
 import { useHistory, useRouteMatch, useParams } from "react-router-dom";
 import { HistoryOutlined } from '@material-ui/icons';
 import service from '../../../queries/getEpisodesBySerie'
+import { Loading } from '../Loading/Loading';
+import { ErrorMessage } from '../Error/Error';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -112,9 +114,16 @@ const Episodes = (props) => {
       </> 
    ))
       if (error) {
-       return <div>Error: {error.message}</div>;
+       return (
+        <>
+          <ErrorMessage/>
+        </>
+       )
      } else if (!isLoaded) {
-       return <div>Loading...</div>;
+       return (
+       <>
+          <Loading/>
+       </>);
      } else {
          return (
             <List component="nav" className={classes.root} aria-label="mailbox folders">

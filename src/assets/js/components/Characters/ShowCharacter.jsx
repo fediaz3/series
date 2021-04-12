@@ -15,6 +15,8 @@ import { Seasons } from '../Seasons/Seasons';
 import { Link } from 'react-router-dom';
 import service from '../../../queries/getCharacterById'
 import service2 from '../../../queries/getQuotesByFullName'
+import { Loading } from '../Loading/Loading';
+import { ErrorMessage } from '../Error/Error';
 
 
 
@@ -130,9 +132,17 @@ const Character = (props) => {
     ))
 
     if (error) {
-      return <div>Error: {error.message}</div>;
+      return (
+        <>
+          <ErrorMessage/>
+        </>
+      )
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      return (
+      <>
+        <p></p>
+        <Loading/>
+      </>);
     } else {
       return (
         <>

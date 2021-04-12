@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import {List, ListItem, ListItemText, Divider} from '@material-ui/core'
 import { Characters } from '../Characters/Characters';
 import service from '../../../queries/getEpisodeById'
+import { Loading } from '../Loading/Loading';
+import { ErrorMessage } from '../Error/Error';
 
 
 
@@ -63,9 +65,17 @@ const Episode = (props) => {
 
 
     if (error) {
-      return <div>Error: {error.message}</div>;
+      return (
+        <>
+          <ErrorMessage/>
+        </>
+      )
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      return (
+        <>
+          <Loading/>
+       </>
+      );
     } else {
         return (
             <>

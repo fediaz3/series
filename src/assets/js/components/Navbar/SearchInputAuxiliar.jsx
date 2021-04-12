@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react'
+import { ErrorMessage } from '../Error/Error';
+import { Loading } from '../Loading/Loading';
 import { SearchInput } from './SearchInput';
 
 
@@ -81,9 +83,17 @@ function SearchInputAuxiliar() {
     }, [])
   
     if (error) {
-      return <div>Error: {error.message}</div>;
+      return (
+        <>
+          <ErrorMessage/>
+        </>
+      )
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      return (
+        <>
+          <Loading color={"red"}/>
+       </>
+      );
     } else {
       return (
         <>

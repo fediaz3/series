@@ -46,6 +46,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "core-js": "^3.6.5",
     "fontsource-roboto": "^4.0.0",
     "koa": "^2.13.0",
